@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GS & IGOR - Portfólio de Elite</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- React e Babel -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+    <style>
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background-color: #010409; 
+            color: #e6edf3; 
+            scroll-behavior: smooth;
+        }
+        .glass-panel { 
+            background: rgba(13, 17, 23, 0.7); 
+            backdrop-filter: blur(12px); 
+            border: 1px solid rgba(255,255,255,0.05); 
+        }
+        .portfolio-card {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .portfolio-card:hover {
+            transform: translateY(-10px);
+            border-color: rgba(37, 99, 235, 0.4);
+        }
+        .image-placeholder {
+            background: linear-gradient(45deg, #0d1117 25%, #161b22 25%, #161b22 50%, #0d1117 50%, #0d1117 75%, #161b22 75%, #161b22 100%);
+            background-size: 40px 40px;
+            border: 2px dashed rgba(255,255,255,0.1);
+        }
+        .text-glow { text-shadow: 0 0 15px rgba(37, 99, 235, 0.3); }
+
+        /* Animação para o Lightbox */
+        .fade-in {
+            animation: fadeIn 0.3s ease-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useEffect, useState } = React;
+
+        const Icon = ({ name, color = "currentColor", size = 24, className = "" }) => {
+            return <i data-lucide={name} style={{ color, width: size, height: size }} className={className}></i>;
+        };
+
+        const portfolioItems = [
+            {
+                id: 1,
+                category: "Sistemas & Web",
+                title: "Fluxo de Caixa com relatorio final",
+                description: "Sistema 'Tirei do Armário' para controle financeiro semanal, gestão de fornecedores e lucros automatizados.",
+                image: "imagem4.jpg",
+                tags: ["React", "Financeiro", "Gestão"],
+                details: "Este sistema foi desenvolvido para resolver a dor de pequenos empreendedores que precisam de uma visão clara das vendas semanais e repasses de lucro."
+            },
+            {
+                id: 2,
+                category: "Landing Pages",
+                title: "Página de Vendas IA & Excel",
+                description: "Interface de alta conversão para cursos, com foco em gatilhos mentais e design responsivo moderno.",
+                image: "imagem7.jpg",
+                tags: ["Copywriting", "Conversão", "Marketing"],
+                details: "Uma landing page focada em performance, utilizando técnicas de design persuasivo para maximizar as matrículas no curso."
+            },
+            {
+                id: 3,
+                category: "E-commerce",
+                title: "Sistema Floricultura Pais e Filhos",
+                description: "Loja virtual completa para venda de arranjos e flores, focada em uma experiência de compra limpa e rápida.",
+                image: "imagem5.jpg",
+                tags: ["Web Design", "Vendas Online", "UX/UI"],
+                details: "Desenvolvimento de interface leve e elegante que traduz o sentimento de presentear com flores em uma jornada de compra intuitiva."
+            },
+            {
+                id: 4,
+                category: "Sistemas Delivery",
+                title: "Cardápio Digital de Hamburgueria",
+                description: "Interface intuitiva para pedidos via WhatsApp, com categorias, fotos reais e cálculo de carrinho.",
+                image: "imagem6.jpg",
+                tags: ["WhatsApp Business", "Delivery", "Gastronomia"],
+                details: "Solução prática para automação de pedidos, reduzindo o tempo de atendimento e erros humanos no processo de delivery."
+            },
+            {
+                id: 5,
+                category: "Identidade Visual",
+                title: "Logotipo TG Detailer",
+                description: "Criação de marca premium para estética automotiva, transmitindo brilho, cuidado e tecnologia.",
+                image: "imagem2.jpg",
+                tags: ["Branding", "Automotivo", "Logo"],
+                details: "Projeto de branding completo que comunica exclusividade e perfeccionismo para o mercado de estética de luxo."
+            },
+            {
+                id: 6,
+                category: "Design Gráfico",
+                title: "Artes Publicitárias & Cardápios",
+                description: "Criação de materiais visuais para redes sociais e estabelecimentos físicos com foco em desejo de consumo.",
+                image: "imagem1.jpg",
+                tags: ["Social Media", "Design", "Marketing"],
+                details: "Design focado em apetite appeal e impacto visual para aumentar o engajamento e as vendas imediatas."
+            }, // Vírgula adicionada aqui
+            {
+                id: 7,
+                category: "Sistema de Agendamento",
+                title: "Sistema para agendamento",
+                description: "Criação de um sistema de agendamento fácil e prático para o cliente",
+                image: "imagem8.jpg",
+                images: ["imagem8.jpg", "imagem9.jpg", "imagem10.jpg"], // Lista das 3 fotos
+                tags: ["Agendamento", "Sistema", "Automação"],
+                details: "Focado para melhor experiência do usuário, permitindo agendamentos em poucos cliques."
+            }
+        ];
+
+        function App() {
+            const [view, setView] = useState('home');
+            const [selectedProject, setSelectedProject] = useState(null);
+            const [activeImageIdx, setActiveImageIdx] = useState(0);
+            const [isLightboxOpen, setIsLightboxOpen] = useState(false);
+
+            useEffect(() => {
+                if (window.lucide) {
+                    window.lucide.createIcons();
+                }
+                window.scrollTo(0, 0);
+            }, [view, isLightboxOpen, activeImageIdx]);
+
+            const openProject = (project) => {
+                setSelectedProject(project);
+                setActiveImageIdx(0);
+                setView('project');
+            };
+
+            const goBack = () => {
+                setView('home');
+                setSelectedProject(null);
+                setIsLightboxOpen(false);
+            };
+
+            const nextImage = (e) => {
+                e.stopPropagation();
+                if (selectedProject.images) {
+                    setActiveImageIdx((prev) => (prev + 1) % selectedProject.images.length);
+                }
+            };
+
+            const prevImage = (e) => {
+                e.stopPropagation();
+                if (selectedProject.images) {
+                    setActiveImageIdx((prev) => (prev - 1 + selectedProject.images.length) % selectedProject.images.length);
+                }
+            };
+
+            const whatsappLink = `https://wa.me/5524998147901?text=Olá Gilson, vi o projeto ${selectedProject?.title} e gostaria de saber mais!`;
+
+            // COMPONENTE LIGHTBOX
+            const Lightbox = () => {
+                const imgSource = selectedProject.images ? selectedProject.images[activeImageIdx] : selectedProject.image;
+                return (
+                    <div 
+                        className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-xl flex items-center justify-center p-4 md:p-10 cursor-zoom-out fade-in"
+                        onClick={() => setIsLightboxOpen(false)}
+                    >
+                        <button className="absolute top-6 right-6 text-white/50 hover:text-white transition-colors bg-white/10 p-3 rounded-full">
+                            <Icon name="x" size={24} />
+                        </button>
+                        <img 
+                            src={imgSource} 
+                            className="max-w-full max-h-full object-contain shadow-2xl rounded-lg"
+                            onClick={(e) => e.stopPropagation()}
+                        />
+                    </div>
+                );
+            };
+
+            // VIEW: DETALHES DO PROJETO
+            if (view === 'project' && selectedProject) {
+                const currentImg = selectedProject.images ? selectedProject.images[activeImageIdx] : selectedProject.image;
+
+                return (
+                    <div className="min-h-screen flex flex-col bg-[#010409]">
+                        {isLightboxOpen && <Lightbox />}
+                        
+                        <nav className="fixed top-0 w-full z-50 border-b border-white/5 bg-[#010409]/80 backdrop-blur-xl px-6 py-4">
+                            <div className="max-w-7xl mx-auto flex justify-between items-center">
+                                <button onClick={goBack} className="flex items-center gap-2 text-slate-400 hover:text-white transition-colors group">
+                                    <Icon name="arrow-left" size={18} className="group-hover:-translate-x-1 transition-transform" />
+                                    <span className="text-xs font-black uppercase tracking-widest">Portfólio Principal</span>
+                                </button>
+                                <a href={whatsappLink} target="_blank" className="bg-blue-600 px-6 py-2 rounded-full text-white text-[10px] font-black uppercase tracking-widest hover:bg-blue-500 transition-all">Orçamento</a>
+                            </div>
+                        </nav>
+
+                        <main className="pt-32 pb-20 px-6 max-w-7xl mx-auto w-full">
+                            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+                                <div className="lg:col-span-8 space-y-8">
+                                    {/* ÁREA DE IMAGEM PRINCIPAL COM NAVEGAÇÃO */}
+                                    <div className="image-placeholder rounded-[2.5rem] overflow-hidden aspect-[16/10] flex items-center justify-center relative shadow-2xl border border-white/10 group">
+                                        <img 
+                                            src={currentImg} 
+                                            className="w-full h-full object-contain p-4 transition-all duration-500 cursor-zoom-in"
+                                            onClick={() => setIsLightboxOpen(true)}
+                                            onError={(e) => { e.target.src = 'https://via.placeholder.com/800x500/0d1117/3b82f6?text=Preview+Projeto'; }}
+                                        />
+                                        
+                                        {/* Setas para passar as fotos se houver galeria */}
+                                        {selectedProject.images && (
+                                            <div className="absolute inset-0 flex items-center justify-between px-4 pointer-events-none">
+                                                <button onClick={prevImage} className="p-3 rounded-full bg-black/40 text-white pointer-events-auto hover:bg-blue-600 transition-all opacity-0 group-hover:opacity-100">
+                                                    <Icon name="chevron-left" size={24} />
+                                                </button>
+                                                <button onClick={nextImage} className="p-3 rounded-full bg-black/40 text-white pointer-events-auto hover:bg-blue-600 transition-all opacity-0 group-hover:opacity-100">
+                                                    <Icon name="chevron-right" size={24} />
+                                                </button>
+                                            </div>
+                                        )}
+
+                                        <div className="absolute top-4 right-4 bg-black/60 px-3 py-1.5 rounded-full text-[10px] font-bold text-white backdrop-blur-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                                            <Icon name="maximize-2" size={12} className="inline mr-2" /> Ampliar
+                                        </div>
+                                    </div>
+
+                                    {/* MINIATURAS CLICÁVEIS */}
+                                    <div className="grid grid-cols-3 gap-4">
+                                        {selectedProject.images ? (
+                                            selectedProject.images.map((img, idx) => (
+                                                <button 
+                                                    key={idx}
+                                                    onClick={() => setActiveImageIdx(idx)}
+                                                    className={`h-24 md:h-32 rounded-3xl overflow-hidden border-2 transition-all ${activeImageIdx === idx ? 'border-blue-500 ring-4 ring-blue-500/20' : 'border-white/5 opacity-40 hover:opacity-100'}`}
+                                                >
+                                                    <img src={img} className="w-full h-full object-cover" onError={(e) => { e.target.src = 'https://via.placeholder.com/200?text=Foto'; }} />
+                                                </button>
+                                            ))
+                                        ) : (
+                                            <>
+                                                <div className="bg-white/5 h-32 rounded-3xl border border-white/5 flex items-center justify-center italic text-[10px] text-slate-600 uppercase">Visão 01</div>
+                                                <div className="bg-white/5 h-32 rounded-3xl border border-white/5 flex items-center justify-center italic text-[10px] text-slate-600 uppercase">Visão 02</div>
+                                                <div className="bg-white/5 h-32 rounded-3xl border border-white/5 flex items-center justify-center italic text-[10px] text-slate-600 uppercase">Visão 03</div>
+                                            </>
+                                        )}
+                                    </div>
+                                </div>
+
+                                <div className="lg:col-span-4">
+                                    <div className="sticky top-32 space-y-8">
+                                        <div>
+                                            <span className="text-blue-500 text-[10px] font-black uppercase tracking-widest mb-2 block">{selectedProject.category}</span>
+                                            <h1 className="text-4xl font-black uppercase italic tracking-tight leading-none mb-6">{selectedProject.title}</h1>
+                                            <p className="text-slate-400 italic font-light leading-relaxed mb-8">{selectedProject.details}</p>
+                                        </div>
+
+                                        <div className="space-y-4">
+                                            <h4 className="text-[10px] font-black uppercase tracking-widest text-slate-500">Tecnologias & Expertises</h4>
+                                            <div className="flex flex-wrap gap-2">
+                                                {selectedProject.tags.map(tag => (
+                                                    <span key={tag} className="bg-white/5 border border-white/10 px-4 py-2 rounded-xl text-[10px] font-bold text-blue-400 uppercase tracking-wider">
+                                                        {tag}
+                                                    </span>
+                                                ))}
+                                            </div>
+                                        </div>
+
+                                        <div className="pt-8 border-t border-white/5">
+                                            <a href={whatsappLink} target="_blank" className="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-black py-5 rounded-2xl text-[11px] uppercase tracking-[0.2em] transition-all flex items-center justify-center gap-3 shadow-xl shadow-emerald-900/20">
+                                                <Icon name="zap" size={16} /> Solicitar Projeto Similar
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </main>
+                    </div>
+                );
+            }
+
+            // VIEW: HOME
+            return (
+                <div className="min-h-screen flex flex-col">
+                    <nav className="fixed top-0 w-full z-50 border-b border-white/5 bg-[#010409]/80 backdrop-blur-xl px-6 py-4">
+                        <div className="max-w-7xl mx-auto flex justify-between items-center">
+                            <div className="flex items-center gap-2">
+                                <div className="h-8 w-8 bg-blue-600 rounded-lg flex items-center justify-center font-black italic text-white shadow-lg text-sm">GS</div>
+                                <span className="font-black uppercase tracking-tighter text-xl">GS <span className="text-blue-500">&</span> IGOR</span>
+                            </div>
+                            <div className="flex gap-8 items-center">
+                                <a href="#portfolio" className="text-[10px] font-bold uppercase tracking-widest text-slate-500 hover:text-blue-400 transition-colors">Portfólio</a>
+                                <a href={whatsappLink} target="_blank" className="bg-blue-600 px-6 py-2 rounded-full text-white text-[10px] font-black uppercase tracking-widest hover:bg-blue-500 transition-all">Orçamento</a>
+                            </div>
+                        </div>
+                    </nav>
+
+                    <header className="relative pt-40 pb-24 px-6 text-center">
+                        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-5xl h-96 bg-blue-600/5 blur-[120px] rounded-full pointer-events-none"></div>
+                        <h1 className="text-5xl md:text-8xl font-black uppercase tracking-tight italic mb-6 leading-none">
+                            Elite <span className="text-blue-500 text-glow">Dev & Design</span>.
+                        </h1>
+                        <p className="text-slate-500 text-lg md:text-2xl max-w-2xl mx-auto italic font-light">Projetos de alto impacto visual e funcional.</p>
+                    </header>
+
+                    <section id="portfolio" className="max-w-7xl mx-auto px-6 py-20 w-full">
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                            {portfolioItems.map((item) => (
+                                <div key={item.id} className="portfolio-card group bg-[#0d1117] border border-white/5 rounded-[2.5rem] p-5 flex flex-col h-full">
+                                    <div className="relative mb-6 aspect-video rounded-3xl overflow-hidden bg-black/40">
+                                        <img 
+                                            src={item.image} 
+                                            alt={item.title}
+                                            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                                            onError={(e) => { e.target.src = 'https://via.placeholder.com/600x400/0d1117/3b82f6?text=Preview'; }}
+                                        />
+                                        <div className="absolute top-4 left-4">
+                                            <span className="bg-blue-600 text-white text-[8px] font-black uppercase px-3 py-1.5 rounded-full">{item.category}</span>
+                                        </div>
+                                        {item.images && (
+                                            <div className="absolute bottom-4 right-4 bg-black/60 backdrop-blur px-2 py-1 rounded text-[8px] font-bold text-white flex items-center gap-1">
+                                                <Icon name="layers" size={10} /> Galeria (3)
+                                            </div>
+                                        )}
+                                    </div>
+                                    
+                                    <div className="px-2 flex-grow">
+                                        <h3 className="text-xl font-black uppercase italic mb-3">{item.title}</h3>
+                                        <p className="text-slate-400 text-sm italic mb-8 font-light leading-relaxed">{item.description}</p>
+                                    </div>
+
+                                    <button 
+                                        onClick={() => openProject(item)}
+                                        className="w-full bg-white/5 hover:bg-blue-600/10 border border-white/5 hover:border-blue-500/30 py-5 rounded-2xl flex items-center justify-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] transition-all"
+                                    >
+                                        Ver Detalhes do Projeto <Icon name="chevron-right" size={14} />
+                                    </button>
+                                </div>
+                            ))}
+                        </div>
+                    </section>
+
+                    <footer className="py-20 px-6 text-center border-t border-white/5">
+                        <p className="text-[10px] font-black uppercase tracking-[0.5em] text-slate-700 italic">GS & IGOR • UNIDADE DE ELITE • 2026</p>
+                    </footer>
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
