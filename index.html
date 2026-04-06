@@ -43,6 +43,9 @@
             100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
         }
         .text-glow { text-shadow: 0 0 15px rgba(37, 99, 235, 0.3); }
+        
+        /* Ajuste para evitar quebra de palavras longas em mobile */
+        h1, h2 { word-wrap: break-word; overflow-wrap: break-word; }
     </style>
 </head>
 <body>
@@ -108,75 +111,73 @@
 
         function App() {
             useEffect(() => {
-                // Inicializa os ícones da Lucide após o render
                 if (window.lucide) {
                     window.lucide.createIcons();
                 }
             }, []);
 
             const whatsappMessage = encodeURIComponent("Olá Gilson, vi o portfólio da GS & Igor e gostaria de conversar sobre um projeto para potencializar meu negócio!");
-            // NÚMERO ATUALIZADO: 24998147901
             const whatsappLink = `https://wa.me/5524998147901?text=${whatsappMessage}`;
 
             return (
                 <div className="min-h-screen flex flex-col">
-                    {/* NAVEGAÇÃO FIXA */}
-                    <nav className="fixed top-0 w-full z-50 border-b border-white/5 bg-[#0d1117]/80 backdrop-blur-xl px-6 py-4">
+                    {/* NAVEGAÇÃO FIXA - Responsiva */}
+                    <nav className="fixed top-0 w-full z-50 border-b border-white/5 bg-[#0d1117]/80 backdrop-blur-xl px-4 md:px-6 py-4">
                         <div className="max-w-7xl mx-auto flex justify-between items-center">
-                            <div className="flex items-center gap-3">
-                                <div className="h-10 w-10 bg-blue-600 rounded-xl flex items-center justify-center font-black italic text-white shadow-lg">GS</div>
-                                <span className="font-black uppercase tracking-tighter text-xl">GS <span className="text-blue-500">&</span> IGOR</span>
+                            <div className="flex items-center gap-2 md:gap-3">
+                                <div className="h-8 w-8 md:h-10 md:w-10 bg-blue-600 rounded-lg flex items-center justify-center font-black italic text-white shadow-lg text-sm md:text-base">GS</div>
+                                <span className="font-black uppercase tracking-tighter text-base md:text-xl">GS <span className="text-blue-500">&</span> IGOR</span>
                             </div>
-                            <div className="hidden md:flex gap-10 items-center">
-                                <a href="#servicos" className="text-[10px] font-bold uppercase tracking-widest text-slate-500 hover:text-blue-400 transition-colors">Especialidades</a>
-                                <a href="#contato" className="border border-blue-500/30 px-6 py-2 rounded-full text-blue-400 text-[10px] font-black uppercase tracking-widest hover:bg-blue-600 hover:text-white transition-all">Falar com o Gilson</a>
+                            <div className="flex gap-4 md:gap-10 items-center">
+                                <a href="#servicos" className="text-[9px] md:text-[10px] font-bold uppercase tracking-widest text-slate-500 hover:text-blue-400 transition-colors hidden sm:inline">Especialidades</a>
+                                <a href="#contato" className="border border-blue-500/30 px-3 md:px-6 py-2 rounded-full text-blue-400 text-[9px] md:text-[10px] font-black uppercase tracking-widest hover:bg-blue-600 hover:text-white transition-all text-center">Contato</a>
                             </div>
                         </div>
                     </nav>
 
-                    {/* HERO SECTION */}
-                    <header className="relative pt-40 pb-28 px-6 text-center overflow-hidden border-b border-white/5">
-                        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-5xl h-96 bg-blue-600/10 blur-[120px] rounded-full pointer-events-none"></div>
+                    {/* HERO SECTION - Fontes responsivas */}
+                    <header className="relative pt-32 md:pt-40 pb-20 md:pb-28 px-4 md:px-6 text-center overflow-hidden border-b border-white/5">
+                        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-5xl h-64 md:h-96 bg-blue-600/10 blur-[80px] md:blur-[120px] rounded-full pointer-events-none"></div>
                         <div className="max-w-5xl mx-auto relative z-10">
-                            <div className="inline-flex items-center gap-2 bg-blue-500/10 border border-blue-500/20 px-5 py-2 rounded-full mb-10">
-                                <span className="text-[10px] font-black uppercase tracking-[0.3em] text-blue-400 italic">UNIDADE DE DESENVOLVIMENTO WEB + DESIGN</span>
+                            <div className="inline-flex items-center gap-2 bg-blue-500/10 border border-blue-500/20 px-3 md:px-5 py-2 rounded-full mb-8 md:mb-10">
+                                <span className="text-[8px] md:text-[10px] font-black uppercase tracking-[0.2em] md:tracking-[0.3em] text-blue-400 italic">DESENVOLVIMENTO WEB + DESIGN PROFISSIONAL</span>
                             </div>
-                            <h1 className="text-5xl md:text-8xl font-black uppercase tracking-tight italic mb-8 leading-[1.1]">
+                            <h1 className="text-4xl sm:text-6xl md:text-8xl font-black uppercase tracking-tight italic mb-6 md:mb-8 leading-[1.1] md:leading-[1.1]">
                                 Potencializando o <br/> <span className="text-blue-500 italic text-glow">seu negócio</span>.
                             </h1>
-                            <p className="text-slate-400 text-lg md:text-2xl max-w-3xl mx-auto mb-14 font-light italic leading-relaxed">
+                            <p className="text-slate-400 text-base md:text-2xl max-w-3xl mx-auto mb-10 md:mb-14 font-light italic leading-relaxed px-2">
                                 Automação, Design e Tecnologia de elite. Criamos <span className="text-white font-bold">Soluções Reais</span> que transformam processos manuais em lucro imediato.
                             </p>
-                            <a href="#contato" className="bg-blue-600 hover:bg-blue-500 text-white font-black py-6 px-12 rounded-[2rem] text-xs uppercase tracking-widest transition-all btn-glow inline-block shadow-2xl shadow-blue-900/40">
+                            <a href="#contato" className="bg-blue-600 hover:bg-blue-500 text-white font-black py-5 md:py-6 px-8 md:px-12 rounded-[1.5rem] md:rounded-[2rem] text-[10px] md:text-xs uppercase tracking-widest transition-all btn-glow inline-block shadow-2xl shadow-blue-900/40 w-full sm:w-auto">
                                 Elevar meu Negócio Agora
                             </a>
                         </div>
                     </header>
 
-                    {/* GRID DE SERVIÇOS */}
-                    <section id="servicos" className="max-w-7xl mx-auto px-6 py-24">
-                        <div className="mb-16 text-center md:text-left flex flex-col md:flex-row justify-between items-end gap-6">
-                            <div className="max-w-xl text-left">
-                                <h2 className="text-4xl md:text-6xl font-black uppercase italic tracking-tight mb-4 leading-[1.1]">Nosso Catálogo de Especialidades</h2>
-                                <p className="text-slate-500 text-lg italic font-light leading-relaxed">Transformando a complexidade tecnológica em simplicidade operacional.</p>
+                    {/* GRID DE SERVIÇOS - Grade responsiva */}
+                    <section id="servicos" className="max-w-7xl mx-auto px-4 md:px-6 py-16 md:py-24">
+                        <div className="mb-12 md:mb-16 text-center md:text-left flex flex-col md:flex-row justify-between items-center md:items-end gap-6">
+                            <div className="max-w-xl">
+                                <h2 className="text-3xl sm:text-4xl md:text-6xl font-black uppercase italic tracking-tight mb-4 leading-[1.1]">Catálogo de Especialidades</h2>
+                                <p className="text-slate-500 text-base md:text-lg italic font-light leading-relaxed">Simplicidade operacional com inteligência digital.</p>
                             </div>
                         </div>
                         
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
                             {services.map((s, i) => (
-                                <div key={i} className="group bg-[#0d1117] border border-white/5 p-10 rounded-[3.5rem] transition-all hover:-translate-y-2 hover:border-blue-500/20 shadow-xl">
-                                    <div className="flex justify-between items-start mb-10">
-                                        <div className="w-16 h-16 bg-black/40 rounded-2xl flex items-center justify-center border border-white/5 shadow-inner group-hover:scale-110 transition-transform duration-500">
-                                            <Icon name={s.icon} className={s.color} size={32} />
+                                <div key={i} className="group bg-[#0d1117] border border-white/5 p-6 md:p-10 rounded-[2.5rem] md:rounded-[3.5rem] transition-all hover:-translate-y-1 md:hover:-translate-y-2 hover:border-blue-500/20 shadow-xl">
+                                    <div className="flex justify-between items-start mb-6 md:mb-10">
+                                        <div className="w-12 h-12 md:w-16 md:h-16 bg-black/40 rounded-xl md:rounded-2xl flex items-center justify-center border border-white/5 shadow-inner group-hover:scale-110 transition-transform duration-500">
+                                            <Icon name={s.icon} className={s.color} size={s.size || 28} />
                                         </div>
-                                        <span className="text-[9px] font-black uppercase text-slate-600 bg-white/5 px-4 py-1.5 rounded-full">{s.category}</span>
+                                        <span className="text-[8px] md:text-[9px] font-black uppercase text-slate-600 bg-white/5 px-3 md:px-4 py-1.5 rounded-full">{s.category}</span>
                                     </div>
-                                    <h3 className="text-xl font-black uppercase italic mb-4 group-hover:text-blue-400 transition-colors">{s.title}</h3>
-                                    <p className="text-slate-400 text-sm italic mb-8 leading-relaxed font-light">{s.desc}</p>
+                                    <h3 className="text-lg md:text-xl font-black uppercase italic mb-3 md:mb-4 group-hover:text-blue-400 transition-colors">{s.title}</h3>
+                                    <p className="text-slate-400 text-xs md:text-sm italic mb-6 md:mb-8 leading-relaxed font-light">{s.desc}</p>
                                     <div className="flex flex-wrap gap-2">
                                         {s.features.map(f => (
-                                            <span key={f} className="text-[8px] font-black uppercase bg-black/40 px-3 py-2 rounded-xl border border-white/5 text-slate-500 flex items-center gap-1.5">
-                                                <Icon name="check-circle-2" size={10} className="text-blue-500" /> {f}
+                                            <span key={f} className="text-[7px] md:text-[8px] font-black uppercase bg-black/40 px-2 md:px-3 py-1.5 md:py-2 rounded-lg md:rounded-xl border border-white/5 text-slate-500 flex items-center gap-1">
+                                                <Icon name="check-circle-2" size={8} className="text-blue-500" /> {f}
                                             </span>
                                         ))}
                                     </div>
@@ -185,35 +186,35 @@
                         </div>
                     </section>
 
-                    {/* FOOTER DE CONTATO DIRETO */}
-                    <footer id="contato" className="py-32 px-6 text-center border-t border-white/5 bg-gradient-to-b from-transparent to-blue-900/5 mt-auto">
+                    {/* FOOTER - Melhorado para mobile */}
+                    <footer id="contato" className="py-20 md:py-32 px-4 md:px-6 text-center border-t border-white/5 bg-gradient-to-b from-transparent to-blue-900/5 mt-auto">
                         <div className="max-w-4xl mx-auto">
-                            <div className="mb-12 inline-flex p-5 bg-blue-600/10 rounded-full border border-blue-500/20">
-                                <Icon name="shield-check" className="text-blue-500" size={56} />
+                            <div className="mb-8 md:mb-12 inline-flex p-4 md:p-5 bg-blue-600/10 rounded-full border border-blue-500/20">
+                                <Icon name="shield-check" className="text-blue-500" size={40} />
                             </div>
-                            <h2 className="text-4xl md:text-7xl font-black uppercase italic mb-8 tracking-tight leading-[1.1]">Pronto para blindar <br/> seu sucesso?</h2>
-                            <p className="text-slate-500 mb-16 text-lg max-w-xl mx-auto italic font-light leading-relaxed">
-                                Clique no botão abaixo para iniciar seu atendimento estratégico e descubra como podemos potencializar sua operação hoje.
+                            <h2 className="text-3xl sm:text-4xl md:text-7xl font-black uppercase italic mb-6 md:mb-8 tracking-tight leading-[1.1]">Pronto para blindar <br/> seu sucesso?</h2>
+                            <p className="text-slate-500 mb-10 md:mb-16 text-base md:text-lg max-w-xl mx-auto italic font-light leading-relaxed px-4">
+                                Inicie seu atendimento estratégico e descubra como podemos potencializar sua operação hoje.
                             </p>
                             
-                            <div className="flex flex-col items-center">
+                            <div className="flex flex-col items-center w-full px-2">
                                 <a 
                                     href={whatsappLink} 
                                     target="_blank"
-                                    className="pulse-whatsapp bg-emerald-600 hover:bg-emerald-500 text-white font-black py-8 px-16 rounded-[3rem] text-sm uppercase tracking-[0.2em] transition-all flex items-center gap-5 shadow-2xl shadow-emerald-900/30 active:scale-95"
+                                    className="pulse-whatsapp bg-emerald-600 hover:bg-emerald-500 text-white font-black py-6 md:py-8 px-6 md:px-16 rounded-[2rem] md:rounded-[3rem] text-xs md:text-sm uppercase tracking-[0.1em] md:tracking-[0.2em] transition-all flex items-center justify-center gap-3 md:gap-5 shadow-2xl shadow-emerald-900/30 active:scale-95 w-full sm:w-auto"
                                 >
-                                    <Icon name="message-square" size={28} />
-                                    FALAR DIRETAMENTE COM O GILSON
+                                    <Icon name="message-square" size={20} />
+                                    FALAR COM O GILSON
                                 </a>
-                                <p className="mt-10 text-[10px] text-slate-500 font-mono uppercase tracking-[0.5em] italic">Consultoria, Fluxos de Caixa, Design & Automação</p>
+                                <p className="mt-6 md:mt-10 text-[8px] md:text-[10px] text-slate-500 font-mono uppercase tracking-[0.3em] md:tracking-[0.5em] italic">Consultoria, Fluxos de Caixa, Design & Automação</p>
                             </div>
                             
-                            <div className="mt-40 pt-16 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-8 opacity-40">
+                            <div className="mt-24 md:mt-40 pt-12 md:pt-16 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6 opacity-40">
                                 <div className="flex items-center gap-3">
-                                    <div className="h-8 w-8 bg-slate-800 rounded-lg flex items-center justify-center font-black italic text-xs">GS</div>
-                                    <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">GS & IGOR UNIDADE DE ELITE</span>
+                                    <div className="h-7 w-7 bg-slate-800 rounded-lg flex items-center justify-center font-black italic text-[10px]">GS</div>
+                                    <span className="text-[8px] md:text-[10px] font-black uppercase tracking-widest text-slate-400">GS & IGOR UNIDADE DE ELITE</span>
                                 </div>
-                                <p className="text-[9px] font-mono text-slate-700 uppercase tracking-[0.6em]">© 2026 • PORTO REAL • RJ</p>
+                                <p className="text-[8px] md:text-[9px] font-mono text-slate-700 uppercase tracking-[0.4em] md:tracking-[0.6em]">© 2026 • PORTO REAL • RJ</p>
                             </div>
                         </div>
                     </footer>
