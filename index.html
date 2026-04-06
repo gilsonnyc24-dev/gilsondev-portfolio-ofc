@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GS & IGOR - Soluções Digitais de Elite</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- React e Babel (Execução via CDN para acesso imediato) -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+    <style>
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background-color: #010409; 
+            color: #e6edf3; 
+            scroll-behavior: smooth;
+        }
+        .glass-panel { 
+            background: rgba(13, 17, 23, 0.7); 
+            backdrop-filter: blur(12px); 
+            border: 1px solid rgba(255,255,255,0.05); 
+        }
+        .btn-glow:hover { 
+            box-shadow: 0 0 30px rgba(37, 99, 235, 0.4); 
+            transform: translateY(-2px);
+        }
+        .pulse-whatsapp { 
+            animation: pulse-green 2s infinite; 
+        }
+        @keyframes pulse-green {
+            0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
+            70% { box-shadow: 0 0 0 20px rgba(16, 185, 129, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+        }
+        .text-glow { text-shadow: 0 0 15px rgba(37, 99, 235, 0.3); }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useEffect } = React;
+
+        const Icon = ({ name, color = "currentColor", size = 24, className = "" }) => {
+            return <i data-lucide={name} style={{ color, width: size, height: size }} className={className}></i>;
+        };
+
+        const services = [
+            { 
+                category: "Engenharia de Dados", 
+                title: "Fluxo de Caixa Inteligente", 
+                desc: "Sistemas financeiros com envio de relatórios automáticos via WhatsApp e PDFs profissionais.", 
+                features: ["Relatórios WhatsApp", "PDF Automatizado", "Backup Nuvem"], 
+                icon: "file-spreadsheet", 
+                color: "text-emerald-500" 
+            },
+            { 
+                category: "Inteligência Artificial", 
+                title: "Automação de Processos", 
+                desc: "Scripts e agentes de IA que eliminam tarefas repetitivas, integrando IA com programação.", 
+                features: ["Agentes de IA", "Scripts Customizados", "Escalabilidade"], 
+                icon: "brain-circuit", 
+                color: "text-blue-500" 
+            },
+            { 
+                category: "Web Development", 
+                title: "Sistemas de Cadastro", 
+                desc: "Interfaces rápidas (CRUD) para gestão de clientes e estoques com segurança blindada.", 
+                features: ["React JS (SPA)", "Sincronia Cloud", "Alta Performance"], 
+                icon: "code-2", 
+                color: "text-purple-500" 
+            },
+            { 
+                category: "Identidade Visual", 
+                title: "Design de Logotipos", 
+                desc: "Criação de logotipos premium e manuais de marca que transmitem autoridade e confiança.", 
+                features: ["Logo Vetorial", "Manual de Marca", "Design Exclusivo"], 
+                icon: "palette", 
+                color: "text-rose-500" 
+            },
+            { 
+                category: "Audiovisual", 
+                title: "Vídeos com Modelos", 
+                desc: "Produção e edição de vídeos de marketing usando modelos fixos para anúncios de impacto.", 
+                features: ["Modelos Fixos", "Edição Dinâmica", "Foco em Conversão"], 
+                icon: "video", 
+                color: "text-amber-500" 
+            },
+            { 
+                category: "Marketing Digital", 
+                title: "Soluções Criativas", 
+                desc: "Cardápios visuais, banners para redes sociais e materiais digitais para vender mais.", 
+                features: ["Cardápios Digitais", "Banners de Vendas", "Layouts Modernos"], 
+                icon: "smartphone", 
+                color: "text-indigo-500" 
+            }
+        ];
+
+        function App() {
+            useEffect(() => {
+                // Inicializa os ícones da Lucide após o render
+                if (window.lucide) {
+                    window.lucide.createIcons();
+                }
+            }, []);
+
+            const whatsappMessage = encodeURIComponent("Olá Gilson, vi o portfólio da GS & Igor e gostaria de conversar sobre um projeto para potencializar meu negócio!");
+            // NÚMERO ATUALIZADO: 24998147901
+            const whatsappLink = `https://wa.me/5524998147901?text=${whatsappMessage}`;
+
+            return (
+                <div className="min-h-screen flex flex-col">
+                    {/* NAVEGAÇÃO FIXA */}
+                    <nav className="fixed top-0 w-full z-50 border-b border-white/5 bg-[#0d1117]/80 backdrop-blur-xl px-6 py-4">
+                        <div className="max-w-7xl mx-auto flex justify-between items-center">
+                            <div className="flex items-center gap-3">
+                                <div className="h-10 w-10 bg-blue-600 rounded-xl flex items-center justify-center font-black italic text-white shadow-lg">GS</div>
+                                <span className="font-black uppercase tracking-tighter text-xl">GS <span className="text-blue-500">&</span> IGOR</span>
+                            </div>
+                            <div className="hidden md:flex gap-10 items-center">
+                                <a href="#servicos" className="text-[10px] font-bold uppercase tracking-widest text-slate-500 hover:text-blue-400 transition-colors">Especialidades</a>
+                                <a href="#contato" className="border border-blue-500/30 px-6 py-2 rounded-full text-blue-400 text-[10px] font-black uppercase tracking-widest hover:bg-blue-600 hover:text-white transition-all">Falar com o Gilson</a>
+                            </div>
+                        </div>
+                    </nav>
+
+                    {/* HERO SECTION */}
+                    <header className="relative pt-40 pb-28 px-6 text-center overflow-hidden border-b border-white/5">
+                        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-5xl h-96 bg-blue-600/10 blur-[120px] rounded-full pointer-events-none"></div>
+                        <div className="max-w-5xl mx-auto relative z-10">
+                            <div className="inline-flex items-center gap-2 bg-blue-500/10 border border-blue-500/20 px-5 py-2 rounded-full mb-10">
+                                <span className="text-[10px] font-black uppercase tracking-[0.3em] text-blue-400 italic">UNIDADE DE DESENVOLVIMENTO WEB + DESIGN</span>
+                            </div>
+                            <h1 className="text-5xl md:text-8xl font-black uppercase tracking-tight italic mb-8 leading-[1.1]">
+                                Potencializando o <br/> <span className="text-blue-500 italic text-glow">seu negócio</span>.
+                            </h1>
+                            <p className="text-slate-400 text-lg md:text-2xl max-w-3xl mx-auto mb-14 font-light italic leading-relaxed">
+                                Automação, Design e Tecnologia de elite. Criamos <span className="text-white font-bold">Soluções Reais</span> que transformam processos manuais em lucro imediato.
+                            </p>
+                            <a href="#contato" className="bg-blue-600 hover:bg-blue-500 text-white font-black py-6 px-12 rounded-[2rem] text-xs uppercase tracking-widest transition-all btn-glow inline-block shadow-2xl shadow-blue-900/40">
+                                Elevar meu Negócio Agora
+                            </a>
+                        </div>
+                    </header>
+
+                    {/* GRID DE SERVIÇOS */}
+                    <section id="servicos" className="max-w-7xl mx-auto px-6 py-24">
+                        <div className="mb-16 text-center md:text-left flex flex-col md:flex-row justify-between items-end gap-6">
+                            <div className="max-w-xl text-left">
+                                <h2 className="text-4xl md:text-6xl font-black uppercase italic tracking-tight mb-4 leading-[1.1]">Nosso Catálogo de Especialidades</h2>
+                                <p className="text-slate-500 text-lg italic font-light leading-relaxed">Transformando a complexidade tecnológica em simplicidade operacional.</p>
+                            </div>
+                        </div>
+                        
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                            {services.map((s, i) => (
+                                <div key={i} className="group bg-[#0d1117] border border-white/5 p-10 rounded-[3.5rem] transition-all hover:-translate-y-2 hover:border-blue-500/20 shadow-xl">
+                                    <div className="flex justify-between items-start mb-10">
+                                        <div className="w-16 h-16 bg-black/40 rounded-2xl flex items-center justify-center border border-white/5 shadow-inner group-hover:scale-110 transition-transform duration-500">
+                                            <Icon name={s.icon} className={s.color} size={32} />
+                                        </div>
+                                        <span className="text-[9px] font-black uppercase text-slate-600 bg-white/5 px-4 py-1.5 rounded-full">{s.category}</span>
+                                    </div>
+                                    <h3 className="text-xl font-black uppercase italic mb-4 group-hover:text-blue-400 transition-colors">{s.title}</h3>
+                                    <p className="text-slate-400 text-sm italic mb-8 leading-relaxed font-light">{s.desc}</p>
+                                    <div className="flex flex-wrap gap-2">
+                                        {s.features.map(f => (
+                                            <span key={f} className="text-[8px] font-black uppercase bg-black/40 px-3 py-2 rounded-xl border border-white/5 text-slate-500 flex items-center gap-1.5">
+                                                <Icon name="check-circle-2" size={10} className="text-blue-500" /> {f}
+                                            </span>
+                                        ))}
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </section>
+
+                    {/* FOOTER DE CONTATO DIRETO */}
+                    <footer id="contato" className="py-32 px-6 text-center border-t border-white/5 bg-gradient-to-b from-transparent to-blue-900/5 mt-auto">
+                        <div className="max-w-4xl mx-auto">
+                            <div className="mb-12 inline-flex p-5 bg-blue-600/10 rounded-full border border-blue-500/20">
+                                <Icon name="shield-check" className="text-blue-500" size={56} />
+                            </div>
+                            <h2 className="text-4xl md:text-7xl font-black uppercase italic mb-8 tracking-tight leading-[1.1]">Pronto para blindar <br/> seu sucesso?</h2>
+                            <p className="text-slate-500 mb-16 text-lg max-w-xl mx-auto italic font-light leading-relaxed">
+                                Clique no botão abaixo para iniciar seu atendimento estratégico e descubra como podemos potencializar sua operação hoje.
+                            </p>
+                            
+                            <div className="flex flex-col items-center">
+                                <a 
+                                    href={whatsappLink} 
+                                    target="_blank"
+                                    className="pulse-whatsapp bg-emerald-600 hover:bg-emerald-500 text-white font-black py-8 px-16 rounded-[3rem] text-sm uppercase tracking-[0.2em] transition-all flex items-center gap-5 shadow-2xl shadow-emerald-900/30 active:scale-95"
+                                >
+                                    <Icon name="message-square" size={28} />
+                                    FALAR DIRETAMENTE COM O GILSON
+                                </a>
+                                <p className="mt-10 text-[10px] text-slate-500 font-mono uppercase tracking-[0.5em] italic">Consultoria, Fluxos de Caixa, Design & Automação</p>
+                            </div>
+                            
+                            <div className="mt-40 pt-16 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-8 opacity-40">
+                                <div className="flex items-center gap-3">
+                                    <div className="h-8 w-8 bg-slate-800 rounded-lg flex items-center justify-center font-black italic text-xs">GS</div>
+                                    <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">GS & IGOR UNIDADE DE ELITE</span>
+                                </div>
+                                <p className="text-[9px] font-mono text-slate-700 uppercase tracking-[0.6em]">© 2026 • PORTO REAL • RJ</p>
+                            </div>
+                        </div>
+                    </footer>
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
